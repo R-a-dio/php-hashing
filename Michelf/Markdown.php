@@ -736,8 +736,8 @@ class Markdown implements MarkdownInterface {
 		return $this->hashPart($result);
 	}
 	protected function camoURL($url) {
-		$hmac = hash_hmac("sha1", utf8_encode($link), $this->camo_key);
-		$hex = bin2hex(utf8_encode($link));
+		$hmac = hash_hmac("sha1", utf8_encode($url), $this->camo_key);
+		$hex = bin2hex(utf8_encode($url));
 		return $this->camo_host . "$hmac/$hex";
 	}
 
