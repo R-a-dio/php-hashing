@@ -59,6 +59,9 @@ class Markdown implements MarkdownInterface {
 	public $predef_urls = array();
 	public $predef_titles = array();
 
+	# Camo implementation by hiro <hiroto@hiroto.eu>
+	public $camo_host = "http://localhost:8081";
+	public $camo_key = "0x24FEEDFACEDEADBEEFCAFE";
 
 	### Parser Implementation ###
 
@@ -698,7 +701,7 @@ class Markdown implements MarkdownInterface {
 
 		$alt_text = $this->encodeAttribute($alt_text);
 		if (isset($this->urls[$link_id])) {
-			$url = $this->encodeAttribute($this->urls[$link_id]);
+			$url = $this->camoURL($this->urls[$link_id]);
 			$result = "<img src=\"$url\" alt=\"$alt_text\"";
 			if (isset($this->titles[$link_id])) {
 				$title = $this->titles[$link_id];
@@ -722,7 +725,7 @@ class Markdown implements MarkdownInterface {
 		$title			=& $matches[7];
 
 		$alt_text = $this->encodeAttribute($alt_text);
-		$url = $this->encodeAttribute($url);
+		$url = $this->camoURL($url);
 		$result = "<img src=\"$url\" alt=\"$alt_text\"";
 		if (isset($title)) {
 			$title = $this->encodeAttribute($title);
@@ -731,6 +734,11 @@ class Markdown implements MarkdownInterface {
 		$result .= $this->empty_element_suffix;
 
 		return $this->hashPart($result);
+	}
+	protected function camoURL($url) {
+		$hmac = hash_hmac("sha1", utf8_encode($link), $this->camo_key);
+		$hex = bin2hex(utf8_encode($link));
+		return $this->camo_host . "$hmac/$hex";
 	}
 
 
@@ -2112,7 +2120,6 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 			#
 			# Check for: Auto-close tag (like <hr/>)
 			#			 Comments and Processing Instructions.
-			#
 			if (preg_match('{^</?(?:'.$this->auto_close_tags_re.')\b}', $tag) ||
 				$tag{1} == '!' || $tag{1} == '?')
 			{
@@ -2401,7 +2408,8 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 
 		$alt_text = $this->encodeAttribute($alt_text);
 		if (isset($this->urls[$link_id])) {
-			$url = $this->encodeAttribute($this->urls[$link_id]);
+
+			$url = $this->camoURL($this->urls[$link_id]);
 			$result = "<img src=\"$url\" alt=\"$alt_text\"";
 			if (isset($this->titles[$link_id])) {
 				$title = $this->titles[$link_id];
@@ -2428,7 +2436,7 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 		$attr  = $this->doExtraAttributes("img", $dummy =& $matches[8]);
 
 		$alt_text = $this->encodeAttribute($alt_text);
-		$url = $this->encodeAttribute($url);
+		$url = $this->camoURL($url);
 		$result = "<img src=\"$url\" alt=\"$alt_text\"";
 		if (isset($title)) {
 			$title = $this->encodeAttribute($title);
