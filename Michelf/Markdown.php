@@ -702,7 +702,7 @@ class Markdown implements MarkdownInterface {
 		$alt_text = $this->encodeAttribute($alt_text);
 		if (isset($this->urls[$link_id])) {
 			$url = $this->camoURL($this->urls[$link_id]);
-			$result = "<img src=\"$url\" alt=\"$alt_text\"";
+			$result = "<img class=\"img-responsive\" src=\"$url\" alt=\"$alt_text\"";
 			if (isset($this->titles[$link_id])) {
 				$title = $this->titles[$link_id];
 				$title = $this->encodeAttribute($title);
@@ -726,7 +726,7 @@ class Markdown implements MarkdownInterface {
 
 		$alt_text = $this->encodeAttribute($alt_text);
 		$url = $this->camoURL($url);
-		$result = "<img src=\"$url\" alt=\"$alt_text\"";
+		$result = "<img class=\"img-responsive\" src=\"$url\" alt=\"$alt_text\"";
 		if (isset($title)) {
 			$title = $this->encodeAttribute($title);
 			$result .=  " title=\"$title\""; # $title already quoted
@@ -2410,7 +2410,7 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 		if (isset($this->urls[$link_id])) {
 
 			$url = $this->camoURL($this->urls[$link_id]);
-			$result = "<img src=\"$url\" alt=\"$alt_text\"";
+			$result = "<img class=\"img-responsive\" src=\"$url\" alt=\"$alt_text\"";
 			if (isset($this->titles[$link_id])) {
 				$title = $this->titles[$link_id];
 				$title = $this->encodeAttribute($title);
@@ -2437,7 +2437,7 @@ abstract class _MarkdownExtra_TmpImpl extends \Michelf\Markdown {
 
 		$alt_text = $this->encodeAttribute($alt_text);
 		$url = $this->camoURL($url);
-		$result = "<img src=\"$url\" alt=\"$alt_text\"";
+		$result = "<img class=\"img-responsive\" src=\"$url\" alt=\"$alt_text\"";
 		if (isset($title)) {
 			$title = $this->encodeAttribute($title);
 			$result .=  " title=\"$title\""; # $title already quoted
